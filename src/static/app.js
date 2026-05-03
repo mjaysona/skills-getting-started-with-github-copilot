@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const spotsLeft = details.max_participants - details.participants.length;
 
         const participantItems = details.participants.length
-          ? details.participants.map(p => `<li><button class="unregister-btn" data-activity="${name}" data-email="${p}" title="Unregister">&#x1F5D1;</button>${p}</li>`).join("")
+          ? details.participants.map(p => `<li><button type="button" class="unregister-btn" data-activity="${name}" data-email="${p}" aria-label="Unregister ${p} from ${name}" title="Unregister">&#x1F5D1;</button>${p}</li>`).join("")
           : "<li class='no-participants'>No participants yet</li>";
 
         activityCard.innerHTML = `
