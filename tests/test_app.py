@@ -111,7 +111,7 @@ def test_signup_with_invalid_email_format_returns_422(client):
 def test_signup_with_non_school_email_returns_400(client):
     response = client.post("/activities/Chess%20Club/signup?email=student@other.edu")
     assert response.status_code == 400
-    assert "mergington.edu" in response.json()["detail"]
+    assert response.json()["detail"] == "Email must be a mergington.edu address"
 
 
 def test_signup_with_school_email_succeeds(client):
@@ -122,4 +122,4 @@ def test_signup_with_school_email_succeeds(client):
 def test_unregister_with_non_school_email_returns_400(client):
     response = client.delete("/activities/Chess%20Club/unregister?email=student@other.edu")
     assert response.status_code == 400
-    assert "mergington.edu" in response.json()["detail"]
+    assert response.json()["detail"] == "Email must be a mergington.edu address"

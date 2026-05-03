@@ -16,7 +16,7 @@ app = FastAPI(title="Mergington High School API",
               description="API for viewing and signing up for extracurricular activities")
 
 
-def _validate_school_email(email: str) -> None:
+def _validate_school_email(email: EmailStr) -> None:
     """Raise HTTPException if the email is not from the school domain."""
     # EmailStr guarantees the value contains '@', so split('@')[-1] is always safe.
     if email.split("@")[-1] != "mergington.edu":
