@@ -15,12 +15,14 @@ from pathlib import Path
 app = FastAPI(title="Mergington High School API",
               description="API for viewing and signing up for extracurricular activities")
 
+SCHOOL_DOMAIN = "mergington.edu"
+
 
 def _validate_school_email(email: EmailStr) -> None:
     """Raise HTTPException if the email is not from the school domain."""
     # EmailStr guarantees the value contains '@', so split('@')[-1] is always safe.
-    if email.split("@")[-1].lower() != "mergington.edu":
-        raise HTTPException(status_code=400, detail="Email must be a mergington.edu address")
+    if email.split("@")[-1].lower() != SCHOOL_DOMAIN:
+        raise HTTPException(status_code=400, detail=f"Email must be a {SCHOOL_DOMAIN} address")
 
 
 # Mount the static files directory
