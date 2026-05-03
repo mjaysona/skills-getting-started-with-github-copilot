@@ -101,3 +101,25 @@ def test_unregistering_non_member_returns_error(client):
 
     response = _unregister(client, activity_name, participant_name)
     assert response.status_code in {400, 404}
+
+
+def test_signup_with_invalid_email_format_returns_422(client):
+    response = client.post("/activities/Chess%20Club/signup?email=notanemail")
+    assert response.status_code == 422
+
+
+def test_signup_with_non_school_email_returns_400(client):
+    response = client.post("/activities/Chess%20Club/signup?email=student@other.edu")
+    assert response.status_code == 400
+    assert "mergington.edu" in response.json()["detail"]
+
+
+def test_signup_with_school_email_succeeds(client):
+    response = client.post("/activities/Chess%20Club/signup?email=newtest@mergington.edu")
+    assert response.status_code == 200
+
+
+def test_unregister_with_non_school_email_returns_400(client):
+    response = client.delete("/activities/Chess%20Club/unregister?email=student@other.edu")
+    assert response.status_code == 400
+    assert "mergington.edu" in response.json()["detail"]
