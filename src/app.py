@@ -15,6 +15,13 @@ from pathlib import Path
 app = FastAPI(title="Mergington High School API",
               description="API for viewing and signing up for extracurricular activities")
 
+
+def _validate_school_email(email: str) -> None:
+    """Raise HTTPException if the email is not from the school domain."""
+    if email.split("@")[-1] != "mergington.edu":
+        raise HTTPException(status_code=400, detail="Email must be a mergington.edu address")
+
+
 # Mount the static files directory
 current_dir = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
@@ -93,8 +100,7 @@ def get_activities():
 def signup_for_activity(activity_name: str, email: EmailStr):
     """Sign up a student for an activity"""
     # Restrict to school domain
-    if not email.endswith("@mergington.edu"):
-        raise HTTPException(status_code=400, detail="Email must be a mergington.edu address")
+    _validate_school_email(email)
 
     # Validate activity exists
     if activity_name not in activities:
@@ -120,8 +126,7 @@ def signup_for_activity(activity_name: str, email: EmailStr):
 def unregister_from_activity(activity_name: str, email: EmailStr):
     """Unregister a student from an activity"""
     # Restrict to school domain
-    if not email.endswith("@mergington.edu"):
-        raise HTTPException(status_code=400, detail="Email must be a mergington.edu address")
+    _validate_school_email(email)
 
     if activity_name not in activities:
         raise HTTPException(status_code=404, detail="Activity not found")
